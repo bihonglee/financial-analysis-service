@@ -4,28 +4,28 @@
  */
 
 export default async function handler(req, res) {
-  // CORS 헤더 설정
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-
-  // OPTIONS 요청 처리
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  // GET 요청만 허용
-  if (req.method !== 'GET') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
-
   try {
+    // CORS 헤더 설정
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+
+    // OPTIONS 요청 처리
+    if (req.method === 'OPTIONS') {
+      res.status(200).end();
+      return;
+    }
+
+    // GET 요청만 허용
+    if (req.method !== 'GET') {
+      res.status(405).json({ error: 'Method not allowed' });
+      return;
+    }
+
     // Vercel은 쿼리 파라미터를 자동으로 req.query에 파싱합니다
     const query = req.query || {};
     const corp_code = query.corp_code;
@@ -97,10 +97,12 @@ export default async function handler(req, res) {
     res.status(200).json(data);
   } catch (error) {
     console.error('OpenDart API error:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message,
-      stack: error.stack
+      message: error.message || 'Unknown error occurred',
+      type: error.constructor.name,
+      ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
     });
   }
 }
