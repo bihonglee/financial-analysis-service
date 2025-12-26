@@ -1,0 +1,20 @@
+---
+pid: 15884
+cwd: |
+  C:\Users\bihon\.cursor
+---
+PS C:\Users\bihon\.cursor> gh auth login
+PS C:\Users\bihon\.cursor> gh auth login
+? Where do you use GitHub?  [Use arrows to move, type to filter] 
+? Where do you use GitHub? GitHub.com
+? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: A58F-CC84
+Press Enter to open https://github.com/login/device in your browser...
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+unable to find git executable in PATH; please install Git for Windows before retrying
+PS C:\Users\bihon\.cursor>

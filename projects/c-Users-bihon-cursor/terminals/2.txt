@@ -1,0 +1,17 @@
+---
+pid: -1
+cwd: |
+  C:\Users\bihon\.cursor
+active_command: npm run dev
+---
+$ npm run dev
+
+> ai-ethics-education-landing@1.0.0 dev
+> vite
+
+Port 5173 is in use, trying another one...
+
+  VITE v5.4.21  ready in 347 ms
+
+  ➜  Local:   http://localhost:5174/
+  ➜  Network: use --host to expose

@@ -1,0 +1,19 @@
+---
+pid: -1
+cwd: |
+  C:\Users\bihon\.cursor
+active_command: npm run dev
+---
+$ npm run dev
+
+> ai-ethics-education-landing@1.0.0 dev
+> vite
+
+Re-optimizing dependencies because lockfile has changed
+
+  VITE v5.4.21  ready in 525 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+오후 3:10:36 [vite] .env.local changed, restarting server...
+오후 3:10:36 [vite] server restarted.
