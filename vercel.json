@@ -6,16 +6,6 @@
     "api/openai-analysis.js": {
       "maxDuration": 30
     }
-  },
-  "rewrites": [
-    {
-      "source": "/api/opendart",
-      "destination": "/api/opendart.js"
-    },
-    {
-      "source": "/api/openai-analysis",
-      "destination": "/api/openai-analysis.js"
-    }
-  ]
+  }
 }
 

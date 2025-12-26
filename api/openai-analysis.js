@@ -3,7 +3,7 @@
  * Vercel Serverless Function
  */
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // CORS 헤더 설정
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -97,7 +97,7 @@ export default async function handler(req, res) {
       message: error.message 
     });
   }
-}
+};
 
 /**
  * 재무 데이터를 분석 프롬프트로 변환
