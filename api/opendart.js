@@ -3,7 +3,7 @@
  * Vercel Serverless Function
  */
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // CORS 헤더 설정
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,12 +26,19 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { corp_code, bsns_year, reprt_code } = req.query;
-
-    console.log('Request query:', { corp_code, bsns_year, reprt_code });
+    // Vercel은 쿼리 파라미터를 자동으로 req.query에 파싱합니다
+    const query = req.query || {};
+    const corp_code = query.corp_code;
+    const bsns_year = query.bsns_year;
+    const reprt_code = query.reprt_code;
+    
+    console.log('Request method:', req.method);
+    console.log('Request query:', query);
+    console.log('Parsed params:', { corp_code, bsns_year, reprt_code });
     console.log('Environment variables:', {
       hasViteKey: !!process.env.VITE_OPENDART_API_KEY,
-      hasOpendartKey: !!process.env.OPENDART_API_KEY
+      hasOpendartKey: !!process.env.OPENDART_API_KEY,
+      allEnvKeys: Object.keys(process.env).filter(k => k.includes('OPENDART') || k.includes('OPENAI'))
     });
 
     // 필수 파라미터 검증
@@ -39,7 +46,12 @@ module.exports = async (req, res) => {
       res.status(400).json({ 
         error: 'Missing required parameters',
         message: 'corp_code, bsns_year, and reprt_code are required',
-        received: { corp_code, bsns_year, reprt_code }
+        received: { 
+          corp_code, 
+          bsns_year, 
+          reprt_code 
+        },
+        query: query
       });
       return;
     }
@@ -60,11 +72,11 @@ module.exports = async (req, res) => {
     }
 
     // OpenDart API 호출
-    const url = `https://opendart.fss.or.kr/api/fnlttSinglAcnt.json?crtfc_key=${apiKey}&corp_code=${corp_code}&bsns_year=${bsns_year}&reprt_code=${reprt_code}`;
+    const apiUrl = `https://opendart.fss.or.kr/api/fnlttSinglAcnt.json?crtfc_key=${apiKey}&corp_code=${corp_code}&bsns_year=${bsns_year}&reprt_code=${reprt_code}`;
     
-    console.log('Calling OpenDart API:', url.replace(apiKey, '***'));
+    console.log('Calling OpenDart API:', apiUrl.replace(apiKey, '***'));
     
-    const response = await fetch(url);
+    const response = await fetch(apiUrl);
     const data = await response.json();
 
     console.log('OpenDart API response status:', data.status);
@@ -87,8 +99,9 @@ module.exports = async (req, res) => {
     console.error('OpenDart API error:', error);
     res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message 
+      message: error.message,
+      stack: error.stack
     });
   }
-};
+}
 

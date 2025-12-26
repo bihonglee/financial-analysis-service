@@ -3,7 +3,7 @@
  * Vercel Serverless Function
  */
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // CORS 헤더 설정
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -94,7 +94,8 @@ module.exports = async (req, res) => {
     console.error('OpenAI API error:', error);
     res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message 
+      message: error.message,
+      stack: error.stack
     });
   }
 };
